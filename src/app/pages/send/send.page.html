@@ -1,0 +1,116 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <img class="header-icon" src="assets/icon.png" [attr.alt]="i18n.t('feed.title')" />
+    </ion-buttons>
+    <ion-title>{{ i18n.t('send.title') }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">{{ i18n.t('send.title') }}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="send-form">
+    <!-- Plate input with inline country selector -->
+    <div class="plate-input-section">
+      <label class="plate-label">{{ i18n.t('send.plateLabel') }}</label>
+      <div class="plate-input-row">
+        <ion-select
+          interface="action-sheet"
+          [value]="plateService.selectedCountry().code"
+          (ionChange)="onCountryChange($event)"
+          class="country-flag-select"
+          [aria-label]="i18n.t('send.countryLabel')"
+        >
+          @for (country of plateService.countries; track country.code) {
+            <ion-select-option [value]="country.code">
+              {{ country.flag }}  {{ country.name }}
+            </ion-select-option>
+          }
+        </ion-select>
+        <input
+          class="plate-input"
+          [class.plate-input--invalid]="showPlateError()"
+          type="text"
+          [ngModel]="plateNumber()"
+          (ngModelChange)="onPlateInput($event)"
+          [placeholder]="plateService.placeholder()"
+          maxlength="12"
+          (blur)="plateTouched.set(true)"
+          autocapitalize="characters"
+          autocomplete="off"
+          autocorrect="off"
+        />
+      </div>
+      @if (showPlateError()) {
+        <ion-note color="danger" class="plate-hint">
+          {{ plateValidation().hint }}
+        </ion-note>
+      }
+    </div>
+
+    <ion-input
+      [label]="i18n.t('send.nameLabel')"
+      labelPlacement="floating"
+      fill="outline"
+      [ngModel]="senderName()"
+      (ngModelChange)="senderName.set($event)"
+      [placeholder]="i18n.t('send.namePlaceholder')"
+      maxlength="40"
+      class="name-input"
+    />
+
+    <ion-textarea
+      [label]="i18n.t('send.messageLabel')"
+      labelPlacement="floating"
+      fill="outline"
+      [ngModel]="messageText()"
+      (ngModelChange)="messageText.set($event ?? '')"
+      [placeholder]="i18n.t('send.messagePlaceholder')"
+      [maxlength]="500"
+      [counter]="true"
+      [autoGrow]="true"
+      rows="4"
+      class="message-textarea"
+    />
+
+    <div class="recommended-messages">
+      <div class="recommended-messages__label">
+        {{ i18n.t('send.recommendedMessages') }}
+      </div>
+      @if (recommendationsLoading()) {
+        <ion-note color="medium">{{ i18n.t('send.recommendedLoading') }}</ion-note>
+      } @else {
+        <div class="recommended-messages__list">
+          @for (recommended of recommendedMessages(); track recommended) {
+            <button
+              type="button"
+              class="recommended-messages__item"
+              (click)="applyRecommendation(recommended)"
+            >
+              {{ recommended }}
+            </button>
+          }
+        </div>
+      }
+    </div>
+
+    <ion-button
+      expand="block"
+      size="large"
+      [disabled]="!canSend() || sending()"
+      (click)="send()"
+      class="send-button"
+    >
+      @if (sending()) {
+        <ion-spinner name="crescent" />
+      } @else {
+        {{ i18n.t('send.button') }}
+      }
+    </ion-button>
+  </div>
+</ion-content>

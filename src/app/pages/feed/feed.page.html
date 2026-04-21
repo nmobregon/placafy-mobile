@@ -1,0 +1,58 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="feed-logo-toolbar">
+    <div class="feed-logo-center">
+      <img class="header-logo" src="assets/logo.png" [attr.alt]="i18n.t('feed.title')" />
+    </div>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar
+      [placeholder]="i18n.t('feed.searchPlaceholder')"
+      [debounce]="300"
+      (ionInput)="onSearch($event)"
+      inputmode="text"
+      autocapitalize="characters"
+    />
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">{{ i18n.t('feed.title') }}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-refresher slot="fixed" (ionRefresh)="onRefresh($event)">
+    <ion-refresher-content />
+  </ion-refresher>
+
+  @if (filteredMessages().length === 0) {
+    <div class="empty-state">
+      <ion-text color="medium">
+        @if (searchQuery()) {
+          <p>{{ i18n.t('feed.noResults', { query: searchQuery() }) }}</p>
+        } @else {
+          <p>{{ i18n.t('feed.empty') }}</p>
+        }
+      </ion-text>
+    </div>
+  } @else {
+    <div class="feed-list">
+      @for (msg of filteredMessages(); track msg.id) {
+        <app-message-card
+          [message]="msg"
+          (plateTapped)="goToPlate($event)"
+        />
+      }
+    </div>
+  }
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button
+      (click)="goToSend()"
+      color="primary"
+      [attr.aria-label]="i18n.t('tabs.send')"
+    >
+      <img class="fab-icon" src="assets/icon.png" alt="" />
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

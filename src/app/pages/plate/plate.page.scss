@@ -1,0 +1,81 @@
+.header-icon {
+  display: block;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  margin-left: 4px;
+}
+
+.fab-icon {
+  width: 118%;
+  height: 118%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+ion-fab-button {
+  --background: transparent;
+  --background-activated: transparent;
+  --background-focused: transparent;
+  --background-hover: transparent;
+  box-shadow:
+    0 10px 22px rgba(0, 0, 0, 0.55),
+    0 2px 8px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.plate-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 24px 16px 8px;
+}
+
+.plate-header p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.profile-link {
+  border: 0;
+  background: transparent;
+  color: var(--ion-color-primary);
+  font-size: 0.78rem;
+  padding: 0;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.message-list {
+  padding: 0 8px 80px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.message-list app-message-card {
+  display: block;
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .message-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .message-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  text-align: center;
+  padding: 32px;
+}

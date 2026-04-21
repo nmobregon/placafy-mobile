@@ -1,0 +1,40 @@
+ion-card {
+  margin: 8px 0;
+  border-radius: 12px;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.card-header--time-only {
+  justify-content: flex-end;
+}
+
+.plate-tap {
+  cursor: pointer;
+}
+
+.time {
+  font-size: 0.75rem;
+}
+
+.message-text {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin: 0 0 8px 0;
+  color: var(--ion-text-color);
+}
+
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.sender {
+  font-size: 0.8rem;
+  font-style: italic;
+}

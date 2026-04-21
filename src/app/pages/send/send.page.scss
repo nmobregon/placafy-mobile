@@ -1,0 +1,154 @@
+.header-icon {
+  display: block;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.send-form {
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 8px;
+}
+
+.plate-input-section {
+  text-align: center;
+}
+
+.plate-label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--ion-color-medium);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.plate-input-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+.country-flag-select {
+  flex-shrink: 0;
+  width: 52px;
+  height: 54px;
+  font-size: 1.6rem;
+  --padding-start: 10px;
+  --padding-end: 4px;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  border: 3px solid var(--ion-color-dark, #222);
+  border-right: none;
+  border-radius: 10px 0 0 10px;
+  background: var(--ion-color-light, #f4f4f4);
+  cursor: pointer;
+}
+
+.country-flag-select::part(icon) {
+  display: none;
+}
+
+.country-flag-select::part(text) {
+  font-size: 1.6rem;
+}
+
+.plate-input {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-align: center;
+  text-transform: uppercase;
+  padding: 12px 16px;
+  border: 3px solid var(--ion-color-dark, #222);
+  border-radius: 0 10px 10px 0;
+  background: var(--ion-color-light, #f4f4f4);
+  color: var(--ion-color-dark, #222);
+  width: 100%;
+  max-width: 240px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.plate-input:focus {
+  border-color: var(--ion-color-dark, #222);
+}
+
+.plate-input--invalid {
+  border-color: var(--ion-color-danger) !important;
+}
+
+.plate-input::placeholder {
+  color: var(--ion-color-medium);
+  opacity: 0.5;
+}
+
+.plate-hint {
+  display: block;
+  text-align: center;
+  margin-top: 6px;
+  font-size: 0.8rem;
+}
+
+.name-input {
+  margin-top: 8px;
+}
+
+.message-textarea {
+  margin-top: 4px;
+}
+
+.recommended-messages {
+  margin-top: 2px;
+}
+
+.recommended-messages__label {
+  font-size: 0.82rem;
+  color: var(--ion-color-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.recommended-messages__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.recommended-messages__item {
+  border: 1px solid var(--ion-color-step-250, #ddd);
+  border-radius: 999px;
+  background: transparent;
+  color: #fff;
+  font-size: 0.86rem;
+  padding: 8px 12px;
+  line-height: 1.2;
+}
+
+.send-button {
+  margin-top: 8px;
+  --border-radius: 12px;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .plate-input {
+    background: var(--ion-color-step-100, #333);
+    border-color: var(--ion-color-step-600, #aaa);
+    color: #fff;
+  }
+  .country-flag-select {
+    background: var(--ion-color-step-100, #333);
+    border-color: var(--ion-color-step-600, #aaa);
+  }
+}

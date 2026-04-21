@@ -1,0 +1,21 @@
+{
+  "name": "Placafy",
+  "short_name": "Placafy",
+  "theme_color": "#3880ff",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "assets/icon.png",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-transparent.webp",
+      "type": "image/webp",
+      "purpose": "maskable"
+    }
+  ]
+}

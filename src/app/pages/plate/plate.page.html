@@ -1,0 +1,45 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/feed" />
+      <img class="header-icon" src="assets/icon.png" [attr.alt]="i18n.t('feed.title')" />
+    </ion-buttons>
+    <ion-title>{{ plateNumber() }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="plate-header">
+    <app-plate-badge [plateNumber]="plateNumber()" size="large" />
+    <ion-text color="medium">
+      <p>{{ plateMessages().length === 1 ? i18n.t('plate.messagesCount', { count: 1 }) : i18n.t('plate.messagesCountPlural', { count: plateMessages().length }) }}</p>
+    </ion-text>
+    <button class="profile-link" type="button" (click)="goToProfile()">
+      Is this plate yours?
+    </button>
+  </div>
+
+  @if (plateMessages().length === 0) {
+    <div class="empty-state">
+      <ion-text color="medium">
+        <p>{{ i18n.t('plate.empty') }}</p>
+      </ion-text>
+    </div>
+  } @else {
+    <div class="message-list">
+      @for (msg of plateMessages(); track msg.id) {
+        <app-message-card [message]="msg" [showPlate]="false" (plateTapped)="goToPlate($event)" />
+      }
+    </div>
+  }
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button
+      (click)="sendToPlate()"
+      color="primary"
+      [attr.aria-label]="i18n.t('tabs.send')"
+    >
+      <img class="fab-icon" src="assets/icon.png" alt="" />
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

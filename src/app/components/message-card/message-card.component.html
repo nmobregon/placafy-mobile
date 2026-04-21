@@ -1,0 +1,20 @@
+<ion-card>
+  <ion-card-content>
+    @if (showPlate()) {
+      <div class="card-header">
+        <div class="plate-tap" (click)="onPlateTap($event)">
+          <app-plate-badge [plateNumber]="message().plateNumber" />
+        </div>
+        <ion-note class="time">{{ relativeTime() }}</ion-note>
+      </div>
+    } @else {
+      <div class="card-header card-header--time-only">
+        <ion-note class="time">{{ relativeTime() }}</ion-note>
+      </div>
+    }
+    <p class="message-text">{{ message().text }}</p>
+    <div class="card-footer">
+      <ion-note class="sender">{{ message().senderName }}</ion-note>
+    </div>
+  </ion-card-content>
+</ion-card>
