@@ -1,6 +1,5 @@
 {
   "hosting": {
-    "predeploy": "ng build --configuration production",
     "public": "www",
     "ignore": [
       "firebase.json",
