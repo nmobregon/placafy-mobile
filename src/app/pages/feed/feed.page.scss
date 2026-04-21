@@ -17,16 +17,25 @@
   margin: 0 auto;
 }
 
+.goal-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 16px 4px;
+}
+
 .lang-select {
   min-width: 84px;
   --placeholder-color: var(--ion-color-step-700);
   --highlight-color-focused: transparent;
   font-weight: 700;
+  flex-shrink: 0;
 }
 
 .goal-description {
   display: block;
-  padding: 0 16px 4px;
+  flex: 1;
 }
 
 .goal-description p {

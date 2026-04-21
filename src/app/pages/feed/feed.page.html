@@ -3,7 +3,12 @@
     <div class="feed-logo-center">
       <img class="header-logo" src="assets/logo.png" [attr.alt]="i18n.t('feed.title')" />
     </div>
-    <ion-buttons slot="end">
+  </ion-toolbar>
+  <ion-toolbar>
+    <div class="goal-row">
+      <ion-text color="medium" class="goal-description">
+        <p>{{ i18n.t('feed.goalDescription') }}</p>
+      </ion-text>
       <ion-select
         interface="popover"
         class="lang-select"
@@ -14,12 +19,7 @@
           <ion-select-option [value]="option.value">{{ option.label }}</ion-select-option>
         }
       </ion-select>
-    </ion-buttons>
-  </ion-toolbar>
-  <ion-toolbar>
-    <ion-text color="medium" class="goal-description">
-      <p>{{ i18n.t('feed.goalDescription') }}</p>
-    </ion-text>
+    </div>
     <ion-searchbar
       [placeholder]="i18n.t('feed.searchPlaceholder')"
       [debounce]="300"
