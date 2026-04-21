@@ -2,6 +2,7 @@ import { Component, inject, computed } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
+import { Subscription } from 'rxjs';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent,
   IonBackButton, IonButtons, IonFab, IonFabButton, IonText,
@@ -26,6 +27,8 @@ export class PlatePage {
   private router = inject(Router);
   private messageService = inject(MessageService);
   protected i18n = inject(I18nService);
+  private routeSubscription: Subscription | null = null;
+  private refreshIntervalId: ReturnType<typeof setInterval> | null = null;
 
   plateNumber = toSignal(
     this.route.paramMap.pipe(map(params => params.get('plateNumber') ?? '')),
@@ -37,10 +40,26 @@ export class PlatePage {
   );
 
   constructor() {
-    this.route.paramMap.subscribe((params) => {
+    this.routeSubscription = this.route.paramMap.subscribe((params) => {
       const plateNumber = params.get('plateNumber') ?? '';
       void this.messageService.loadMessages(plateNumber);
     });
+
+    this.startAutoRefresh();
+  }
+
+  ionViewWillEnter() {
+    this.startAutoRefresh();
+  }
+
+  ionViewDidLeave() {
+    this.stopAutoRefresh();
+  }
+
+  ngOnDestroy() {
+    this.stopAutoRefresh();
+    this.routeSubscription?.unsubscribe();
+    this.routeSubscription = null;
   }
 
   sendToPlate() {
@@ -54,5 +73,24 @@ export class PlatePage {
 
   goToProfile() {
     this.router.navigate(['/tabs/profile']);
+  }
+
+  private startAutoRefresh() {
+    if (this.refreshIntervalId) {
+      return;
+    }
+
+    this.refreshIntervalId = setInterval(() => {
+      void this.messageService.loadMessages(this.plateNumber());
+    }, 10000);
+  }
+
+  private stopAutoRefresh() {
+    if (!this.refreshIntervalId) {
+      return;
+    }
+
+    clearInterval(this.refreshIntervalId);
+    this.refreshIntervalId = null;
   }
 }

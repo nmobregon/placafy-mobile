@@ -24,15 +24,26 @@ export class FeedPage {
   private messageService = inject(MessageService);
   private router = inject(Router);
   protected i18n = inject(I18nService);
+  private refreshIntervalId: ReturnType<typeof setInterval> | null = null;
 
   searchQuery = signal('');
 
   constructor() {
     void this.refreshAllMessages();
+    this.startAutoRefresh();
   }
 
   ionViewWillEnter() {
     void this.refreshAllMessages();
+    this.startAutoRefresh();
+  }
+
+  ionViewDidLeave() {
+    this.stopAutoRefresh();
+  }
+
+  ngOnDestroy() {
+    this.stopAutoRefresh();
   }
 
   filteredMessages = computed(() => {
@@ -62,5 +73,24 @@ export class FeedPage {
 
   private refreshAllMessages(): Promise<void> {
     return this.messageService.loadMessages();
+  }
+
+  private startAutoRefresh() {
+    if (this.refreshIntervalId) {
+      return;
+    }
+
+    this.refreshIntervalId = setInterval(() => {
+      void this.refreshAllMessages();
+    }, 10000);
+  }
+
+  private stopAutoRefresh() {
+    if (!this.refreshIntervalId) {
+      return;
+    }
+
+    clearInterval(this.refreshIntervalId);
+    this.refreshIntervalId = null;
   }
 }
