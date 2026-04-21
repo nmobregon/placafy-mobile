@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: 'http://80.241.217.93:3000',
+  apiBaseUrl: 'https://placafy.mooo.com',
   publicApiKey: 'pk_39f7d16a2bcb4f97a4e53e7a',
 };
 

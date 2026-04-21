@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent,
   IonSearchbar, IonRefresher, IonRefresherContent, IonText,
-  IonFab, IonFabButton, IonButtons, IonSelect, IonSelectOption,
+  IonFab, IonFabButton, IonSelect, IonSelectOption,
 } from '@ionic/angular/standalone';
 import { MessageService } from '../../services/message.service';
 import { MessageCardComponent } from '../../components/message-card/message-card.component';
@@ -14,7 +14,7 @@ import { I18nService, SupportedLocale } from '../../i18n/i18n.service';
   imports: [
     IonHeader, IonToolbar, IonTitle, IonContent,
     IonSearchbar, IonRefresher, IonRefresherContent, IonText,
-    IonFab, IonFabButton, IonButtons, IonSelect, IonSelectOption,
+    IonFab, IonFabButton, IonSelect, IonSelectOption,
     MessageCardComponent,
   ],
   templateUrl: 'feed.page.html',
@@ -27,13 +27,13 @@ export class FeedPage {
   private refreshIntervalId: ReturnType<typeof setInterval> | null = null;
 
   searchQuery = signal('');
-  languageOptions: ReadonlyArray<{ value: SupportedLocale; label: string }> = [
-    { value: 'en', label: 'EN' },
-    { value: 'es', label: 'ES' },
-    { value: 'fr', label: 'FR' },
-    { value: 'de', label: 'DE' },
-    { value: 'it', label: 'IT' },
-    { value: 'pt', label: 'PT' },
+  languageOptions: ReadonlyArray<{ value: SupportedLocale; flag: string; label: string }> = [
+    { value: 'en', flag: '🇺🇸', label: 'English' },
+    { value: 'es', flag: '🇪🇸', label: 'Español' },
+    { value: 'fr', flag: '🇫🇷', label: 'Français' },
+    { value: 'de', flag: '🇩🇪', label: 'Deutsch' },
+    { value: 'it', flag: '🇮🇹', label: 'Italiano' },
+    { value: 'pt', flag: '🇵🇹', label: 'Português' },
   ];
 
   constructor() {
@@ -81,6 +81,12 @@ export class FeedPage {
 
   async onLanguageChange(event: CustomEvent) {
     await this.i18n.setLocale(event.detail.value as SupportedLocale);
+  }
+
+  selectedLanguageFlag(): string {
+    const locale = this.i18n.locale();
+    const selected = this.languageOptions.find(option => option.value === locale);
+    return selected?.flag ?? '🌐';
   }
 
   private refreshAllMessages(): Promise<void> {

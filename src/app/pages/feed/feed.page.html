@@ -13,10 +13,11 @@
         interface="popover"
         class="lang-select"
         [value]="i18n.locale()"
+        [selectedText]="selectedLanguageFlag()"
         (ionChange)="onLanguageChange($event)"
       >
         @for (option of languageOptions; track option.value) {
-          <ion-select-option [value]="option.value">{{ option.label }}</ion-select-option>
+          <ion-select-option [value]="option.value">{{ option.flag }} {{ option.label }}</ion-select-option>
         }
       </ion-select>
     </div>
