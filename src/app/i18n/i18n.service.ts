@@ -1,14 +1,35 @@
 import { Injectable, signal } from '@angular/core';
 import { en } from './en';
+import { es } from './es';
+import { fr } from './fr';
+import { de } from './de';
+import { pt } from './pt';
+import { it } from './it';
 
 type TranslationMap = Record<string, string>;
+export type SupportedLocale = 'en' | 'es' | 'fr' | 'de' | 'it' | 'pt';
 
 @Injectable({ providedIn: 'root' })
 export class I18nService {
+  private readonly localeStorageKey = 'placafy.locale';
+  private readonly dictionaries: Record<SupportedLocale, TranslationMap> = {
+    en,
+    es,
+    fr,
+    de,
+    it,
+    pt,
+  };
+  readonly supportedLocales: readonly SupportedLocale[] = ['en', 'es', 'fr', 'de', 'it', 'pt'];
   private translations = signal<TranslationMap>(en);
-  private _locale = signal<string>('en');
+  private _locale = signal<SupportedLocale>('en');
 
   readonly locale = this._locale.asReadonly();
+
+  constructor() {
+    const locale = this.detectInitialLocale();
+    void this.setLocale(locale);
+  }
 
   /**
    * Translate a key, with optional interpolation params.
@@ -24,14 +45,45 @@ export class I18nService {
     return value;
   }
 
-  /**
-   * Switch language at runtime (load a different translation map).
-   * For now only 'en' is available.
-   */
   async setLocale(locale: string) {
-    // Future: dynamically import other locale files
-    // const mod = await import(`./${locale}.ts`);
-    // this.translations.set(mod.default);
-    this._locale.set(locale);
+    const supportedLocale = this.normalizeLocale(locale);
+    this.translations.set(this.dictionaries[supportedLocale]);
+    this._locale.set(supportedLocale);
+    localStorage.setItem(this.localeStorageKey, supportedLocale);
+  }
+
+  private detectInitialLocale(): SupportedLocale {
+    const storedLocale = localStorage.getItem(this.localeStorageKey);
+    if (storedLocale) {
+      return this.normalizeLocale(storedLocale);
+    }
+
+    const preferredLocales = navigator.languages?.length ? navigator.languages : [navigator.language];
+    const matchedLocale = preferredLocales
+      .map(locale => this.normalizeLocale(locale))
+      .find(locale => this.supportedLocales.includes(locale));
+
+    return matchedLocale ?? 'en';
+  }
+
+  private normalizeLocale(locale: string): SupportedLocale {
+    const normalized = locale.toLowerCase();
+    if (normalized.startsWith('es')) {
+      return 'es';
+    }
+    if (normalized.startsWith('fr')) {
+      return 'fr';
+    }
+    if (normalized.startsWith('de')) {
+      return 'de';
+    }
+    if (normalized.startsWith('it')) {
+      return 'it';
+    }
+    if (normalized.startsWith('pt')) {
+      return 'pt';
+    }
+
+    return 'en';
   }
 }

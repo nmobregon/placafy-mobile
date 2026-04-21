@@ -3,8 +3,23 @@
     <div class="feed-logo-center">
       <img class="header-logo" src="assets/logo.png" [attr.alt]="i18n.t('feed.title')" />
     </div>
+    <ion-buttons slot="end">
+      <ion-select
+        interface="popover"
+        class="lang-select"
+        [value]="i18n.locale()"
+        (ionChange)="onLanguageChange($event)"
+      >
+        @for (option of languageOptions; track option.value) {
+          <ion-select-option [value]="option.value">{{ option.label }}</ion-select-option>
+        }
+      </ion-select>
+    </ion-buttons>
   </ion-toolbar>
   <ion-toolbar>
+    <ion-text color="medium" class="goal-description">
+      <p>{{ i18n.t('feed.goalDescription') }}</p>
+    </ion-text>
     <ion-searchbar
       [placeholder]="i18n.t('feed.searchPlaceholder')"
       [debounce]="300"

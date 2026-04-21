@@ -6,6 +6,7 @@ export const en = {
 
   // Feed
   'feed.title': 'Placafy',
+  'feed.goalDescription': 'Connect drivers through plate-based public messages.',
   'feed.searchPlaceholder': 'Filter by plate number...',
   'feed.empty': 'No messages yet. Be the first!',
   'feed.noResults': 'No messages found for "{query}"',
@@ -38,4 +39,5 @@ export const en = {
 
   // General
   'general.anonymous': 'Anonymous',
+  'general.languageToggle': 'ES',
 };

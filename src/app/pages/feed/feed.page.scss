@@ -17,6 +17,23 @@
   margin: 0 auto;
 }
 
+.lang-select {
+  min-width: 84px;
+  --placeholder-color: var(--ion-color-step-700);
+  --highlight-color-focused: transparent;
+  font-weight: 700;
+}
+
+.goal-description {
+  display: block;
+  padding: 0 16px 4px;
+}
+
+.goal-description p {
+  margin: 0;
+  font-size: 0.92rem;
+}
+
 .fab-icon {
   width: 118%;
   height: 118%;

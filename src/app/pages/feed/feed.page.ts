@@ -3,18 +3,18 @@ import { Router } from '@angular/router';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent,
   IonSearchbar, IonRefresher, IonRefresherContent, IonText,
-  IonFab, IonFabButton,
+  IonFab, IonFabButton, IonButtons, IonSelect, IonSelectOption,
 } from '@ionic/angular/standalone';
 import { MessageService } from '../../services/message.service';
 import { MessageCardComponent } from '../../components/message-card/message-card.component';
-import { I18nService } from '../../i18n/i18n.service';
+import { I18nService, SupportedLocale } from '../../i18n/i18n.service';
 
 @Component({
   selector: 'app-feed',
   imports: [
     IonHeader, IonToolbar, IonTitle, IonContent,
     IonSearchbar, IonRefresher, IonRefresherContent, IonText,
-    IonFab, IonFabButton,
+    IonFab, IonFabButton, IonButtons, IonSelect, IonSelectOption,
     MessageCardComponent,
   ],
   templateUrl: 'feed.page.html',
@@ -27,6 +27,14 @@ export class FeedPage {
   private refreshIntervalId: ReturnType<typeof setInterval> | null = null;
 
   searchQuery = signal('');
+  languageOptions: ReadonlyArray<{ value: SupportedLocale; label: string }> = [
+    { value: 'en', label: 'EN' },
+    { value: 'es', label: 'ES' },
+    { value: 'fr', label: 'FR' },
+    { value: 'de', label: 'DE' },
+    { value: 'it', label: 'IT' },
+    { value: 'pt', label: 'PT' },
+  ];
 
   constructor() {
     void this.refreshAllMessages();
@@ -69,6 +77,10 @@ export class FeedPage {
 
   goToSend() {
     this.router.navigate(['/tabs/send']);
+  }
+
+  async onLanguageChange(event: CustomEvent) {
+    await this.i18n.setLocale(event.detail.value as SupportedLocale);
   }
 
   private refreshAllMessages(): Promise<void> {
