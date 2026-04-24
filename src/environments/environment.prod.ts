@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://placafy.mooo.com',
+  apiBaseUrl: 'https://api.placafy.com',
   publicApiKey: 'pk_39f7d16a2bcb4f97a4e53e7a',
   firebase: {
     apiKey: 'AIzaSyCt0uCraQPZPiyt1hNDsuP7NVxEJMvQSig',

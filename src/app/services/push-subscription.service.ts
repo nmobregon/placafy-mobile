@@ -81,7 +81,7 @@ export class PushSubscriptionService {
         const tag = String(payload.data?.['messageId'] ?? '');
         new Notification(title, {
           body,
-          icon: '/assets/icon/icon-192.webp',
+          icon: `${window.location.origin}/assets/icon.png`,
           tag: tag || undefined,
         });
       });
