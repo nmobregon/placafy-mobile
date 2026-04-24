@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { Capacitor } from '@capacitor/core';
 import { PushNotifications, Token } from '@capacitor/push-notifications';
 import { getApp, getApps, initializeApp } from 'firebase/app';
-import { getMessaging, getToken } from 'firebase/messaging';
+import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -16,6 +16,7 @@ export class PushSubscriptionService {
   });
   private readonly tokenStorageKey = 'placafy:fcm-token';
   private readonly plateStatePrefix = 'placafy:plate-subscribed:';
+  private webForegroundListenerAttached = false;
 
   async subscribeToPlate(plateNumber: string): Promise<void> {
     const token = await this.getOrCreateDeviceToken();
@@ -53,6 +54,41 @@ export class PushSubscriptionService {
   isSubscribedLocally(plateNumber: string): boolean {
     const normalizedPlate = plateNumber.trim().toUpperCase();
     return localStorage.getItem(this.getPlateStateKey(normalizedPlate)) === '1';
+  }
+
+  /**
+   * Web/PWA: FCM does not auto-show notifications while the tab is in the foreground.
+   * Call once at app startup (native uses Capacitor push instead).
+   */
+  initWebForegroundListener(): void {
+    if (Capacitor.isNativePlatform() || this.webForegroundListenerAttached) {
+      return;
+    }
+    if (typeof window === 'undefined') {
+      return;
+    }
+    this.webForegroundListenerAttached = true;
+    try {
+      const app = getApps().length ? getApp() : initializeApp(environment.firebase);
+      const messaging = getMessaging(app);
+      onMessage(messaging, (payload) => {
+        console.log('[push] Foreground FCM payload:', payload);
+        if (Notification.permission !== 'granted') {
+          return;
+        }
+        const title = payload.notification?.title ?? 'Placafy';
+        const body = payload.notification?.body ?? '';
+        const tag = String(payload.data?.['messageId'] ?? '');
+        new Notification(title, {
+          body,
+          icon: '/assets/icon/icon-192.webp',
+          tag: tag || undefined,
+        });
+      });
+    } catch (error) {
+      this.webForegroundListenerAttached = false;
+      console.warn('[push] Foreground listener not started:', error);
+    }
   }
 
   private getPlateStateKey(plateNumber: string): string {
@@ -148,8 +184,8 @@ export class PushSubscriptionService {
 
     const app = getApps().length ? getApp() : initializeApp(environment.firebase);
     const messaging = getMessaging(app);
-    await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-    const serviceWorkerRegistration = await this.waitForActiveServiceWorker();
+    const serviceWorkerRegistration =
+      await this.registerAndActivateFirebaseMessagingWorker();
     const token = await getToken(messaging, {
       vapidKey,
       serviceWorkerRegistration,
@@ -163,19 +199,40 @@ export class PushSubscriptionService {
     return token;
   }
 
-  private async waitForActiveServiceWorker(): Promise<ServiceWorkerRegistration> {
-    const readyRegistration = await navigator.serviceWorker.ready;
-    if (readyRegistration.active) {
-      return readyRegistration;
+  /**
+   * Do not use `navigator.serviceWorker.ready` here: on the PWA build it often resolves
+   * to Angular's `ngsw-worker.js`, not `firebase-messaging-sw.js`, which breaks push.
+   */
+  private async registerAndActivateFirebaseMessagingWorker(): Promise<ServiceWorkerRegistration> {
+    const reg = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+    if (reg.active) {
+      return reg;
     }
-
-    const fallbackRegistration = await navigator.serviceWorker.getRegistration(
-      '/firebase-messaging-sw.js',
-    );
-    if (fallbackRegistration?.active) {
-      return fallbackRegistration;
+    const worker = reg.installing ?? reg.waiting;
+    if (!worker) {
+      if (reg.active) {
+        return reg;
+      }
+      throw new Error('Firebase messaging service worker did not start installing.');
     }
-
-    throw new Error('Service worker is not active yet. Reload and try again.');
+    if (worker.state === 'activated') {
+      return reg;
+    }
+    await new Promise<void>((resolve, reject) => {
+      const timeoutId = window.setTimeout(() => {
+        reject(new Error('Firebase messaging service worker activation timed out.'));
+      }, 20000);
+      worker.addEventListener('statechange', () => {
+        if (worker.state === 'activated') {
+          window.clearTimeout(timeoutId);
+          resolve();
+        }
+        if (worker.state === 'redundant') {
+          window.clearTimeout(timeoutId);
+          reject(new Error('Firebase messaging service worker became redundant.'));
+        }
+      });
+    });
+    return reg;
   }
 }
