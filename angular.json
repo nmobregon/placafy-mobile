@@ -40,6 +40,11 @@
                 "output": "/"
               },
               {
+                "glob": "firebase-messaging-sw.js",
+                "input": "src",
+                "output": "/"
+              },
+              {
                 "glob": "plate-back.png",
                 "input": ".",
                 "output": "/"

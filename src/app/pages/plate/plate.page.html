@@ -11,9 +11,32 @@
 <ion-content [fullscreen]="true">
   <div class="plate-header">
     <app-plate-badge [plateNumber]="plateNumber()" size="large" />
+    <ion-button
+      class="bell-toggle"
+      fill="clear"
+      size="small"
+      [disabled]="isSubscriptionBusy()"
+      (click)="togglePushSubscription()"
+      [attr.aria-label]="isPushSubscribed() ? 'Unsubscribe notifications' : 'Subscribe notifications'"
+    >
+      <span class="bell-icon-wrap">
+        <ion-icon class="bell-icon" name="notifications-outline" />
+        <ion-icon
+          class="status-icon"
+          [class.status-icon--subscribed]="!isPushSubscribed()"
+          [class.status-icon--unsubscribed]="isPushSubscribed()"
+          [name]="isPushSubscribed() ? 'close-outline' : 'add-outline'"
+        />
+      </span>
+    </ion-button>
     <ion-text color="medium">
       <p>{{ plateMessages().length === 1 ? i18n.t('plate.messagesCount', { count: 1 }) : i18n.t('plate.messagesCountPlural', { count: plateMessages().length }) }}</p>
     </ion-text>
+    @if (subscriptionError()) {
+      <ion-text color="danger">
+        <p class="subscription-error">{{ subscriptionError() }}</p>
+      </ion-text>
+    }
     <button class="profile-link" type="button" (click)="goToProfile()">
       Is this plate yours?
     </button>

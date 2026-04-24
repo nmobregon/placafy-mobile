@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent,
   IonButton, IonTextarea, IonInput, IonSpinner,
-  IonSelect, IonSelectOption, IonNote, IonButtons,
+  IonNote, IonButtons,
   ToastController,
 } from '@ionic/angular/standalone';
 import { MessageService } from '../../services/message.service';
@@ -15,7 +15,7 @@ import { I18nService } from '../../i18n/i18n.service';
   imports: [
     FormsModule, IonHeader, IonToolbar, IonTitle, IonContent,
     IonButton, IonTextarea, IonInput, IonSpinner,
-    IonSelect, IonSelectOption, IonNote, IonButtons,
+    IonNote, IonButtons,
   ],
   templateUrl: 'send.page.html',
   styleUrls: ['send.page.scss'],
@@ -53,7 +53,10 @@ export class SendPage {
   }
 
   onPlateInput(value: string | number | null | undefined) {
-    this.plateNumber.set(String(value ?? '').toUpperCase());
+    const sanitized = String(value ?? '')
+      .toUpperCase()
+      .replace(/[^A-Z0-9-]/g, '');
+    this.plateNumber.set(sanitized);
   }
 
   applyRecommendation(message: string) {

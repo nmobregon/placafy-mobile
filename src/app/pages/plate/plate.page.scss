@@ -37,6 +37,48 @@ ion-fab-button {
   font-size: 0.9rem;
 }
 
+.bell-toggle {
+  --padding-start: 4px;
+  --padding-end: 4px;
+  margin-top: 4px;
+}
+
+.bell-icon-wrap {
+  position: relative;
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+}
+
+.bell-icon {
+  font-size: 22px;
+  color: var(--ion-color-medium);
+}
+
+.status-icon {
+  position: absolute;
+  right: -6px;
+  bottom: -4px;
+  font-size: 14px;
+  border-radius: 999px;
+  background: var(--ion-color-step-50, #fff);
+}
+
+.status-icon--subscribed {
+  color: var(--ion-color-success);
+}
+
+.status-icon--unsubscribed {
+  color: var(--ion-color-danger);
+}
+
+.subscription-error {
+  margin-top: 4px;
+  font-size: 0.75rem;
+}
+
 .profile-link {
   border: 0;
   background: transparent;

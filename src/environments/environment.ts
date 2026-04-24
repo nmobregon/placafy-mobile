@@ -4,8 +4,18 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: 'https://placafy.mooo.com',
+  apiBaseUrl: 'http://localhost:3000',
   publicApiKey: 'pk_39f7d16a2bcb4f97a4e53e7a',
+  /** Client Firebase config (public; used by Angular/Capacitor FCM). Not the server service account. */
+  firebase: {
+    apiKey: 'AIzaSyCt0uCraQPZPiyt1hNDsuP7NVxEJMvQSig',
+    authDomain: 'placafy.firebaseapp.com',
+    projectId: 'placafy',
+    storageBucket: 'placafy.firebasestorage.app',
+    messagingSenderId: '189254967486',
+    appId: '1:189254967486:web:5f772b809a1c87519b3eef',
+    webPushVapidKey: 'BHLUe2h43209o1x3PnOs1RROs3SDukQF5wR1_EDrOVqcmQFBpYZeR94-ITNC7r3GOqRC5Vur6VXjbtL3Jzct0bQ',
+  },
 };
 
 /*

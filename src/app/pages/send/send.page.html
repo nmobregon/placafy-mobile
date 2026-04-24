@@ -13,23 +13,11 @@
     <div class="plate-input-section">
       <label class="plate-label">{{ i18n.t('send.plateLabel') }}</label>
       <div class="plate-input-row">
-        <ion-select
-          interface="action-sheet"
-          [value]="plateService.selectedCountry().code"
-          (ionChange)="onCountryChange($event)"
-          class="country-flag-select"
-          [aria-label]="i18n.t('send.countryLabel')"
-        >
-          @for (country of plateService.countries; track country.code) {
-            <ion-select-option [value]="country.code">
-              {{ country.flag }}  {{ country.name }}
-            </ion-select-option>
-          }
-        </ion-select>
         <input
           class="plate-input"
           [class.plate-input--invalid]="showPlateError()"
           type="text"
+          pattern="[A-Za-z0-9-]*"
           [ngModel]="plateNumber()"
           (ngModelChange)="onPlateInput($event)"
           [placeholder]="plateService.placeholder()"
