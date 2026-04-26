@@ -30,6 +30,7 @@ export const de = {
     'plate.messagesCount': '{count} Nachricht',
     'plate.messagesCountPlural': '{count} Nachrichten',
     'plate.empty': 'Noch keine Nachrichten für dieses Kennzeichen.',
+    'plate.isYours': 'Ist dieses Kennzeichen deins?',
   
     // Profile
     'profile.title': 'Profil',

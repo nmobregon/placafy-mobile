@@ -30,6 +30,7 @@ export const en = {
   'plate.messagesCount': '{count} message',
   'plate.messagesCountPlural': '{count} messages',
   'plate.empty': 'No messages for this plate yet.',
+  'plate.isYours': 'Is this plate yours?',
 
   // Profile
   'profile.title': 'Profile',

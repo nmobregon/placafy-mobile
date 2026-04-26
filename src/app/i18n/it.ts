@@ -30,6 +30,7 @@ export const it = {
     'plate.messagesCount': '{count} messaggio',
     'plate.messagesCountPlural': '{count} messaggi',
     'plate.empty': 'Ancora nessun messaggio per questa targa.',
+    'plate.isYours': 'Questa targa e tua?',
   
     // Profile
     'profile.title': 'Profilo',

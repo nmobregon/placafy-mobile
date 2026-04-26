@@ -30,6 +30,7 @@ export const fr = {
     'plate.messagesCount': '{count} message',
     'plate.messagesCountPlural': '{count} messages',
     'plate.empty': 'Aucun message pour cette plaque pour le moment.',
+    'plate.isYours': 'Cette plaque est a vous ?',
   
     // Profile
     'profile.title': 'Profil',
