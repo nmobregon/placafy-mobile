@@ -88,6 +88,7 @@ type ApiMessage = {
   plateNumber: string;
   text: string;
   senderName: string;
+  geoOrigin?: string | null;
   createdAt: string;
 };
 

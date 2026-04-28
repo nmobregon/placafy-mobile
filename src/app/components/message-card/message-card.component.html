@@ -14,6 +14,9 @@
     }
     <p class="message-text">{{ message().text }}</p>
     <div class="card-footer">
+      @if (message().geoOrigin) {
+        <ion-note class="geo-origin">{{ message().geoOrigin }}</ion-note>
+      }
       <ion-note class="sender">{{ message().senderName }}</ion-note>
     </div>
   </ion-card-content>

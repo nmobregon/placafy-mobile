@@ -3,6 +3,7 @@ export interface Message {
   plateNumber: string;
   text: string;
   senderName: string;
+  geoOrigin?: string | null;
   createdAt: Date;
 }
 

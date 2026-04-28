@@ -31,7 +31,14 @@ ion-card {
 
 .card-footer {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.geo-origin {
+  font-size: 0.75rem;
+  opacity: 0.85;
 }
 
 .sender {
