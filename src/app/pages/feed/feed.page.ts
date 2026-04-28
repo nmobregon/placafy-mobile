@@ -86,6 +86,7 @@ export class FeedPage {
 
   async onLanguageChange(event: CustomEvent) {
     await this.i18n.setLocale(event.detail.value as SupportedLocale);
+    window.location.reload();
   }
 
   selectedLanguageFlag(): string {
