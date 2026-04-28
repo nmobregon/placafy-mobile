@@ -21,7 +21,7 @@
           [ngModel]="plateNumber()"
           (ngModelChange)="onPlateInput($event)"
           [placeholder]="plateService.placeholder()"
-          maxlength="12"
+          [maxlength]="plateNumberMaxLength"
           (blur)="plateTouched.set(true)"
           autocapitalize="characters"
           autocomplete="off"
@@ -40,9 +40,9 @@
       labelPlacement="floating"
       fill="outline"
       [ngModel]="senderName()"
-      (ngModelChange)="senderName.set($event)"
+      (ngModelChange)="onSenderNameChange($event)"
       [placeholder]="i18n.t('send.namePlaceholder')"
-      maxlength="40"
+      [maxlength]="senderNameMaxLength"
       class="name-input"
     />
 
@@ -51,14 +51,16 @@
       labelPlacement="floating"
       fill="outline"
       [ngModel]="messageText()"
-      (ngModelChange)="messageText.set($event ?? '')"
+      (ngModelChange)="onMessageTextChange($event)"
       [placeholder]="i18n.t('send.messagePlaceholder')"
-      [maxlength]="500"
-      [counter]="true"
+      [maxlength]="messageTextMaxLength"
       [autoGrow]="true"
       rows="4"
       class="message-textarea"
     />
+    <ion-note class="message-counter">
+      {{ messageCharsCount() }}/{{ messageTextMaxLength }}
+    </ion-note>
 
     <div class="recommended-messages">
       <div class="recommended-messages__label">

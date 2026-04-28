@@ -21,6 +21,9 @@ import { I18nService } from '../../i18n/i18n.service';
   styleUrls: ['send.page.scss'],
 })
 export class SendPage {
+  readonly plateNumberMaxLength = 14;
+  readonly senderNameMaxLength = 50;
+  readonly messageTextMaxLength = 300;
   private messageService = inject(MessageService);
   private toastController = inject(ToastController);
   protected plateService = inject(PlateValidationService);
@@ -37,9 +40,12 @@ export class SendPage {
   plateValidation = computed(() => this.plateService.validate(this.plateNumber()));
   canSend = computed(() => {
     const plateOk = this.plateValidation().valid;
-    const messageOk = this.messageText().trim().length >= 1;
+    const messageLength = this.messageText().trim().length;
+    const messageOk =
+      messageLength >= 1 && messageLength <= this.messageTextMaxLength;
     return plateOk && messageOk;
   });
+  messageCharsCount = computed(() => this.messageText().length);
   showPlateError = computed(() =>
     this.plateTouched() && this.plateNumber().trim().length > 0 && !this.plateValidation().valid
   );
@@ -55,12 +61,25 @@ export class SendPage {
   onPlateInput(value: string | number | null | undefined) {
     const sanitized = String(value ?? '')
       .toUpperCase()
-      .replace(/[^A-Z0-9-]/g, '');
+      .replace(/[^A-Z0-9-]/g, '')
+      .slice(0, this.plateNumberMaxLength);
     this.plateNumber.set(sanitized);
   }
 
+  onSenderNameChange(value: string | null | undefined) {
+    this.senderName.set((value ?? '').slice(0, this.senderNameMaxLength));
+  }
+
   applyRecommendation(message: string) {
-    this.messageText.set(message);
+    this.setMessageText(message);
+  }
+
+  onMessageTextChange(value: string | null | undefined) {
+    this.setMessageText(value ?? '');
+  }
+
+  private setMessageText(value: string) {
+    this.messageText.set(value.slice(0, this.messageTextMaxLength));
   }
 
   private async loadRecommendedMessages() {
