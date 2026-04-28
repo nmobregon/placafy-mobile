@@ -11,7 +11,6 @@ type SharePayload = {
 @Injectable({ providedIn: 'root' })
 export class SocialShareService {
   private readonly shareBaseUrl = environment.shareBaseUrl;
-  private readonly logoUrl = `${this.shareBaseUrl}/assets/logo.png`;
 
   appUrl(): string {
     return this.shareBaseUrl;
@@ -26,7 +25,7 @@ export class SocialShareService {
   }
 
   async share(payload: SharePayload): Promise<void> {
-    const text = `${payload.description}\n${this.logoUrl}`;
+    const text = payload.description;
 
     try {
       await Share.share({
@@ -50,7 +49,7 @@ export class SocialShareService {
     }
 
     try {
-      await navigator.clipboard.writeText(`${payload.title}\n${payload.description}\n${payload.url}\n${this.logoUrl}`);
+      await navigator.clipboard.writeText(`${payload.title}\n${payload.description}\n${payload.url}`);
     } catch (error) {
       console.warn('[share] Clipboard fallback failed:', error);
       window.open(payload.url, '_blank', 'noopener,noreferrer');
