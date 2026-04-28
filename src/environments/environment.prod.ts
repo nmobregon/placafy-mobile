@@ -11,5 +11,6 @@ export const environment = {
     messagingSenderId: '189254967486',
     appId: '1:189254967486:web:5f772b809a1c87519b3eef',
     webPushVapidKey: 'BHLUe2h43209o1x3PnOs1RROs3SDukQF5wR1_EDrOVqcmQFBpYZeR94-ITNC7r3GOqRC5Vur6VXjbtL3Jzct0bQ',
+    measurementId: "G-QXSXZT9NGZ",
   },
 };

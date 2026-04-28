@@ -3,9 +3,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { Capacitor } from '@capacitor/core';
 import { PushNotifications, Token } from '@capacitor/push-notifications';
-import { getApp, getApps, initializeApp } from 'firebase/app';
 import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 import { environment } from '../../environments/environment';
+import { getFirebaseApp } from './firebase-init';
 
 @Injectable({ providedIn: 'root' })
 export class PushSubscriptionService {
@@ -69,7 +69,7 @@ export class PushSubscriptionService {
     }
     this.webForegroundListenerAttached = true;
     try {
-      const app = getApps().length ? getApp() : initializeApp(environment.firebase);
+      const app = getFirebaseApp();
       const messaging = getMessaging(app);
       onMessage(messaging, (payload) => {
         console.log('[push] Foreground FCM payload:', payload);
@@ -182,7 +182,7 @@ export class PushSubscriptionService {
       throw new Error('Missing web push VAPID key configuration.');
     }
 
-    const app = getApps().length ? getApp() : initializeApp(environment.firebase);
+    const app = getFirebaseApp();
     const messaging = getMessaging(app);
     const serviceWorkerRegistration =
       await this.registerAndActivateFirebaseMessagingWorker();
