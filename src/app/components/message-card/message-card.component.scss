@@ -36,6 +36,12 @@ ion-card {
   gap: 8px;
 }
 
+.card-footer-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
 .geo-origin {
   font-size: 0.75rem;
   opacity: 0.85;
@@ -44,4 +50,10 @@ ion-card {
 .sender {
   font-size: 0.8rem;
   font-style: italic;
+}
+
+.share-message-button {
+  margin: 0;
+  --padding-start: 2px;
+  --padding-end: 2px;
 }

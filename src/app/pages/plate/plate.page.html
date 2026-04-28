@@ -29,6 +29,15 @@
         />
       </span>
     </ion-button>
+    <ion-button
+      class="share-plate-button"
+      fill="clear"
+      size="small"
+      (click)="sharePlate()"
+      [attr.aria-label]="i18n.t('share.sharePlate')"
+    >
+      <ion-icon name="share-social-outline" />
+    </ion-button>
     <ion-text color="medium">
       <p>{{ plateMessages().length === 1 ? i18n.t('plate.messagesCount', { count: 1 }) : i18n.t('plate.messagesCountPlural', { count: plateMessages().length }) }}</p>
     </ion-text>

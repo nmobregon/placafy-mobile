@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   apiBaseUrl: 'http://localhost:3000',
+  shareBaseUrl: 'https://placafy.com',
   publicApiKey: 'pk_39f7d16a2bcb4f97a4e53e7a',
   /** Client Firebase config (public; used by Angular/Capacitor FCM). Not the server service account. */
   firebase: {

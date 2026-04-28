@@ -3,18 +3,21 @@ import { Router } from '@angular/router';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent,
   IonSearchbar, IonRefresher, IonRefresherContent, IonText,
-  IonFab, IonFabButton, IonSelect, IonSelectOption,
+  IonFab, IonFabButton, IonSelect, IonSelectOption, IonButton, IonIcon,
 } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { shareSocialOutline } from 'ionicons/icons';
 import { MessageService } from '../../services/message.service';
 import { MessageCardComponent } from '../../components/message-card/message-card.component';
 import { I18nService, SupportedLocale } from '../../i18n/i18n.service';
+import { SocialShareService } from '../../services/social-share.service';
 
 @Component({
   selector: 'app-feed',
   imports: [
     IonHeader, IonToolbar, IonTitle, IonContent,
     IonSearchbar, IonRefresher, IonRefresherContent, IonText,
-    IonFab, IonFabButton, IonSelect, IonSelectOption,
+    IonFab, IonFabButton, IonSelect, IonSelectOption, IonButton, IonIcon,
     MessageCardComponent,
   ],
   templateUrl: 'feed.page.html',
@@ -23,6 +26,7 @@ import { I18nService, SupportedLocale } from '../../i18n/i18n.service';
 export class FeedPage {
   private messageService = inject(MessageService);
   private router = inject(Router);
+  private socialShare = inject(SocialShareService);
   protected i18n = inject(I18nService);
   private refreshIntervalId: ReturnType<typeof setInterval> | null = null;
 
@@ -37,6 +41,7 @@ export class FeedPage {
   ];
 
   constructor() {
+    addIcons({ shareSocialOutline });
     void this.refreshAllMessages();
     this.startAutoRefresh();
   }
@@ -87,6 +92,14 @@ export class FeedPage {
     const locale = this.i18n.locale();
     const selected = this.languageOptions.find(option => option.value === locale);
     return selected?.flag ?? '🌐';
+  }
+
+  async shareApp() {
+    await this.socialShare.share({
+      title: this.i18n.t('share.appTitle'),
+      description: this.i18n.t('share.appDescription'),
+      url: this.socialShare.appUrl(),
+    });
   }
 
   private refreshAllMessages(): Promise<void> {

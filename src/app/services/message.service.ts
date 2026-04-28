@@ -3,22 +3,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { Message, SendMessageData } from '../models/message.model';
 import { environment } from '../../environments/environment';
+import { I18nService } from '../i18n/i18n.service';
 
 const normalizePlateForCompare = (value: string): string =>
   value.replace(/[^a-z0-9]/gi, '').toUpperCase().trim();
 
-const MOCK_RECOMMENDED_MESSAGES: string[] = [
-  'Your headlights are on.',
-  'You are blocking my driveway, please move when possible.',
-  'Your tire looks flat.',
-  'You left your window open and rain is coming.',
-  'Thanks for parking properly.',
-  'Your alarm has been going off for a while.',
-];
-
 @Injectable({ providedIn: 'root' })
 export class MessageService {
   private readonly http = inject(HttpClient);
+  private readonly i18n = inject(I18nService);
   private readonly baseUrl = environment.apiBaseUrl;
   private readonly headers = new HttpHeaders({
     'x-api-key': environment.publicApiKey,
@@ -79,7 +72,16 @@ export class MessageService {
   async getRecommendedMessages(limit = 4): Promise<string[]> {
     // Mock API call. Replace with real HTTP request later.
     await new Promise(resolve => setTimeout(resolve, 300));
-    return MOCK_RECOMMENDED_MESSAGES.slice(0, Math.max(1, limit));
+    const max = Math.max(1, limit);
+    const localizedMessages = [
+      this.i18n.t('send.recommendedExample1'),
+      this.i18n.t('send.recommendedExample2'),
+      this.i18n.t('send.recommendedExample3'),
+      this.i18n.t('send.recommendedExample4'),
+      this.i18n.t('send.recommendedExample5'),
+      this.i18n.t('send.recommendedExample6'),
+    ];
+    return localizedMessages.slice(0, max);
   }
 }
 

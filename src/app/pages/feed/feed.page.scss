@@ -38,6 +38,12 @@
   text-align: right;
 }
 
+.share-app-button {
+  margin: 0;
+  --padding-start: 4px;
+  --padding-end: 4px;
+}
+
 .goal-description {
   display: block;
   flex-basis: 80%;

@@ -54,6 +54,10 @@ export class SendPage {
     this.loadRecommendedMessages();
   }
 
+  ionViewWillEnter() {
+    void this.loadRecommendedMessages();
+  }
+
   onCountryChange(event: CustomEvent) {
     this.plateService.selectCountry(event.detail.value);
   }

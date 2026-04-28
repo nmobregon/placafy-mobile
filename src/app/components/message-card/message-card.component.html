@@ -17,7 +17,18 @@
       @if (message().geoOrigin) {
         <ion-note class="geo-origin">{{ message().geoOrigin }}</ion-note>
       }
-      <ion-note class="sender">{{ message().senderName }}</ion-note>
+      <div class="card-footer-actions">
+        <ion-note class="sender">{{ message().senderName }}</ion-note>
+        <ion-button
+          fill="clear"
+          size="small"
+          class="share-message-button"
+          (click)="shareMessage($event)"
+          [attr.aria-label]="i18n.t('share.shareMessage')"
+        >
+          <ion-icon name="share-social-outline" />
+        </ion-button>
+      </div>
     </div>
   </ion-card-content>
 </ion-card>

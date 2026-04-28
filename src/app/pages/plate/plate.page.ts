@@ -8,12 +8,13 @@ import {
   IonBackButton, IonButtons, IonFab, IonFabButton, IonText, IonButton, IonIcon,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { addOutline, closeOutline, notificationsOutline } from 'ionicons/icons';
+import { addOutline, closeOutline, notificationsOutline, shareSocialOutline } from 'ionicons/icons';
 import { MessageService } from '../../services/message.service';
 import { MessageCardComponent } from '../../components/message-card/message-card.component';
 import { PlateBadgeComponent } from '../../components/plate-badge/plate-badge.component';
 import { I18nService } from '../../i18n/i18n.service';
 import { PushSubscriptionService } from '../../services/push-subscription.service';
+import { SocialShareService } from '../../services/social-share.service';
 
 @Component({
   selector: 'app-plate',
@@ -30,6 +31,7 @@ export class PlatePage {
   private router = inject(Router);
   private messageService = inject(MessageService);
   private pushSubscriptionService = inject(PushSubscriptionService);
+  private socialShare = inject(SocialShareService);
   protected i18n = inject(I18nService);
   private routeSubscription: Subscription | null = null;
   private refreshIntervalId: ReturnType<typeof setInterval> | null = null;
@@ -47,7 +49,7 @@ export class PlatePage {
   );
 
   constructor() {
-    addIcons({ notificationsOutline, addOutline, closeOutline });
+    addIcons({ notificationsOutline, addOutline, closeOutline, shareSocialOutline });
     this.routeSubscription = this.route.paramMap.subscribe((params) => {
       const plateNumber = params.get('plateNumber') ?? '';
       void this.messageService.loadMessages(plateNumber);
@@ -116,6 +118,19 @@ export class PlatePage {
     } finally {
       this.isSubscriptionBusy.set(false);
     }
+  }
+
+  async sharePlate() {
+    const plate = this.plateNumber();
+    if (!plate) {
+      return;
+    }
+
+    await this.socialShare.share({
+      title: this.i18n.t('share.plateTitle', { plate }),
+      description: this.i18n.t('share.plateDescription', { plate }),
+      url: this.socialShare.plateUrl(plate),
+    });
   }
 
   private startAutoRefresh() {
